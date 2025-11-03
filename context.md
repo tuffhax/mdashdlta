@@ -36,7 +36,8 @@ This is the main interface for environmental monitoring and visualization.
     * **Wellness:** radar chart displaying stress, mood, and energy.
 
     Charts update continuously using a timed `updateData()` loop.
-
+# test for commiting
+does ts work
 * **Alerts & Anomalies:**
     * If oxygen < 19%, temperature > 25°C, or food < 20%, an alert appears in the **“Active Alerts”** section.
     * Alerts pulse visually (red glow) and include acknowledgment buttons.
