@@ -73,8 +73,19 @@ async function sendShip67Message(message) {
         const data = await response.json();
         const ship67Response = data.candidates[0].content.parts[0].text;
 
-        // Add Ship 67 response
-        chatDiv.innerHTML += `<div><strong>[${new Date().toLocaleTimeString()} SHIP67]</strong> ${ship67Response}</div>`;
+        // Add Ship 67 response with typing animation
+        const responseDiv = document.createElement('div');
+        const responseTimestamp = new Date().toLocaleTimeString();
+        responseDiv.innerHTML = `<strong>[${responseTimestamp} SHIP67]</strong> `;
+        chatDiv.appendChild(responseDiv);
+
+        // Create a span for the typing text
+        const textSpan = document.createElement('span');
+        responseDiv.appendChild(textSpan);
+
+        // Type out the response
+        typeShip67Text(textSpan, ship67Response, 20);
+
         chatDiv.scrollTop = chatDiv.scrollHeight;
 
         // Save to history
@@ -90,6 +101,24 @@ async function sendShip67Message(message) {
         ship67Toast(errorMsg, 'error');
         return errorMsg;
     }
+}
+
+// Typing animation function for Ship 67
+function typeShip67Text(element, text, speed = 20) {
+    let index = 0;
+    element.textContent = '';
+
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            const chatDiv = document.getElementById('ship67-chat');
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+            setTimeout(type, speed);
+        }
+    }
+
+    type();
 }
 
 function showApiKeyModal() {

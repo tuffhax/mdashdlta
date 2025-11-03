@@ -10,11 +10,13 @@
 </head>
 <body>
     <header>
-        <h1>🪐 Martian Habitat Dashboard</h1>
+        <h1>Martian Habitat Dashboard</h1>
         <nav>
             <a href="index.html">Dashboard</a>
             <a href="login.html">Login</a>
-            <a href="about.html">About</a>
+            <a href="about.html">Check-In</a>
+            <a href="admin.html">Admin</a>
+            <a href="research-log.html">Research Log</a>
         </nav>
     </header>
 
@@ -87,14 +89,15 @@
         <!-- Ship 67 API Key Modal -->
         <div id="ship67-modal" class="modal">
             <div class="modal-content">
-                <h2>Ship 67 Communication Setup</h2>
-                <p>Enter your Gemini API key to establish communication with Ship 67:</p>
-                <input type="password" id="api-key-input" placeholder="Enter Gemini API Key...">
+                <h2>Ship 67 Uplink</h2>
+                <p>Communications array initialized. Authentication required.</p>
+                <p class="modal-emphasis">Enter secure communication key to establish uplink with Ship 67:</p>
+                <input type="password" id="api-key-input" placeholder="Enter communication key...">
                 <div class="modal-buttons">
-                    <button id="save-api-key">Connect</button>
-                    <button id="cancel-api-key">Cancel</button>
+                    <button id="save-api-key">Establish Connection</button>
+                    <button id="cancel-api-key">Skip</button>
                 </div>
-                <p class="modal-hint">Get your API key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+                <p class="modal-hint">Obtain your secure key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Mission Control</a></p>
             </div>
         </div>
 

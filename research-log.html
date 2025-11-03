@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Log - Martian Habitat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Research & Daily Log</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="login.html">Login</a>
+            <a href="about.html">Check-In</a>
+            <a href="admin.html">Admin</a>
+            <a href="research-log.html">Research Log</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="video-log-section">
+            <h2>Video Research Log</h2>
+            <div class="log-controls">
+                <div class="upload-area" id="video-upload-area">
+                    <div class="upload-prompt">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Drag & drop video files here or click to browse</p>
+                        <p class="upload-hint">Supports MP4, WebM, OGG</p>
+                    </div>
+                    <input type="file" id="video-file-input" accept="video/*" multiple hidden>
+                </div>
+                <div class="record-controls">
+                    <button id="record-video-btn" class="log-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                        Record Video
+                    </button>
+                    <button id="stop-record-btn" class="log-btn log-btn-danger" style="display: none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="6" width="12" height="12"></rect>
+                        </svg>
+                        Stop Recording
+                    </button>
+                    <video id="preview-video" style="display: none;" width="320" height="240" autoplay muted></video>
+                </div>
+            </div>
+
+            <div id="video-entries" class="video-grid"></div>
+        </section>
+
+        <section id="todo-section">
+            <h2>Research To-Do List</h2>
+            <div class="todo-input-area">
+                <input type="text" id="todo-input" placeholder="Add a research task...">
+                <button id="add-todo-btn" class="log-btn">Add Task</button>
+            </div>
+            <div id="todo-list"></div>
+        </section>
+
+        <!-- Video Detail Modal -->
+        <div id="video-modal" class="modal">
+            <div class="modal-content video-modal-content">
+                <button id="close-video-modal" class="close-btn">&times;</button>
+                <video id="modal-video" controls width="100%"></video>
+                <div class="video-details">
+                    <h3 id="modal-video-title"></h3>
+                    <p id="modal-video-user"></p>
+                    <p id="modal-video-date"></p>
+                    <textarea id="modal-video-notes" placeholder="Add notes about this video..."></textarea>
+                    <div class="modal-buttons">
+                        <button id="save-video-notes" class="log-btn">Save Notes</button>
+                        <button id="delete-video-btn" class="log-btn log-btn-danger">Delete Video</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="research-log.js"></script>
+</body>
+</html>

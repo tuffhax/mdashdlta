@@ -12,7 +12,7 @@ const crewMembers = [
     {
         name: "Tarushv Kosgi",
         role: "Engineer",
-        privileges: ["read", "write", "research"],
+        privileges: ["read", "write", "research", "admin"],
         alerts: ["System maintenance check", "Sleep cycle alert"],
         stats: { loginCount: 0, totalLoginTime: 0, commandsExecuted: 0, lastLogin: null }
     },
@@ -46,6 +46,17 @@ function initCharts() {
     const chartOptions = {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+            duration: 750,
+            easing: 'easeInOutQuart'
+        },
+        transitions: {
+            active: {
+                animation: {
+                    duration: 0
+                }
+            }
+        },
         plugins: {
             legend: { display: false }
         },
@@ -86,13 +97,35 @@ function initCharts() {
     foodChart = new Chart(document.getElementById('foodChart'), {
         type: 'bar',
         data: { labels: ['Food Inventory'], datasets: [{ data: [100], backgroundColor: '#4ecdc4' }] },
-        options: { ...chartOptions, scales: { y: { ...chartOptions.scales.y, max: 100 } } }
+        options: {
+            ...chartOptions,
+            scales: {
+                x: { display: true },
+                y: {
+                    ...chartOptions.scales.y,
+                    beginAtZero: true,
+                    min: 0,
+                    max: 100,
+                    ticks: {
+                        ...chartOptions.scales.y.ticks,
+                        stepSize: 20
+                    }
+                }
+            }
+        }
     });
 
     powerChart = new Chart(document.getElementById('powerChart'), {
         type: 'doughnut',
         data: { labels: ['Used', 'Available'], datasets: [{ data: [30, 70], backgroundColor: ['#ff6b6b', '#4ecdc4'] }] },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            }
+        }
     });
 
     sleepChart = new Chart(document.getElementById('sleepChart'), {
@@ -101,13 +134,68 @@ function initCharts() {
         options: chartOptions
     });
 
+    // Initialize wellness chart with multi-user support
+    const wellnessData = JSON.parse(localStorage.getItem('wellnessData') || '{}');
+    const datasets = [];
+    const colors = ['#4ecdc4', '#00d4ff', '#ffa500', '#ff6b6b'];
+
+    crewMembers.forEach((member, index) => {
+        const userData = wellnessData[member.name];
+        const data = userData?.current
+            ? [userData.current.stress, userData.current.mood, userData.current.energy, userData.current.focus, userData.current.health]
+            : [5, 7, 6, 8, 7]; // Default values
+
+        datasets.push({
+            label: member.name,
+            data: data,
+            borderColor: colors[index % colors.length],
+            backgroundColor: colors[index % colors.length].replace(')', ', 0.2)').replace('rgb', 'rgba').replace('#', 'rgba('),
+            borderWidth: 2
+        });
+    });
+
     wellnessChart = new Chart(document.getElementById('wellnessChart'), {
         type: 'radar',
         data: {
             labels: ['Stress', 'Mood', 'Energy', 'Focus', 'Health'],
-            datasets: [{ data: [5, 7, 6, 8, 7], borderColor: '#4ecdc4', backgroundColor: 'rgba(78,205,196,0.2)' }]
+            datasets: datasets
         },
-        options: { responsive: true, maintainAspectRatio: false, elements: { line: { borderWidth: 2 } } }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            elements: { line: { borderWidth: 2 } },
+            animation: {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#e0e0e0',
+                        font: {
+                            family: 'Atkinson Hyperlegible'
+                        }
+                    }
+                }
+            },
+            scales: {
+                r: {
+                    min: 0,
+                    max: 10,
+                    ticks: {
+                        stepSize: 2,
+                        color: '#e0e0e0'
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.1)'
+                    },
+                    pointLabels: {
+                        color: '#e0e0e0'
+                    }
+                }
+            }
+        }
     });
 }
 
@@ -149,7 +237,7 @@ function updateCharts(data) {
         oxygenChart.data.labels.shift();
         oxygenChart.data.datasets[0].data.shift();
     }
-    oxygenChart.update();
+    oxygenChart.update('none');
 
     // Temperature
     temperatureChart.data.labels.push(timeLabel);
@@ -158,15 +246,15 @@ function updateCharts(data) {
         temperatureChart.data.labels.shift();
         temperatureChart.data.datasets[0].data.shift();
     }
-    temperatureChart.update();
+    temperatureChart.update('none');
 
     // Food
     foodChart.data.datasets[0].data = [data.food];
-    foodChart.update();
+    foodChart.update('active');
 
     // Power
     powerChart.data.datasets[0].data = [data.powerUsed, 100 - data.powerUsed];
-    powerChart.update();
+    powerChart.update('active');
 
     // Sleep
     sleepChart.data.labels.push(timeLabel);
@@ -175,18 +263,46 @@ function updateCharts(data) {
         sleepChart.data.labels.shift();
         sleepChart.data.datasets[0].data.shift();
     }
-    sleepChart.update();
+    sleepChart.update('none');
 
-    // Wellness
-    wellnessChart.data.datasets[0].data = [
-        data.wellness.stress,
-        data.wellness.mood,
-        data.wellness.energy,
-        data.wellness.focus,
-        data.wellness.health
-    ];
-    wellnessChart.update();
+    // Wellness - only update when explicitly triggered (don't auto-refresh)
+    // This will be updated by the updateWellnessChart() function when check-ins are submitted
 }
+
+// Function to update wellness chart from stored check-in data
+function updateWellnessChart() {
+    const wellnessData = JSON.parse(localStorage.getItem('wellnessData') || '{}');
+    const colors = ['#4ecdc4', '#00d4ff', '#ffa500', '#ff6b6b'];
+
+    wellnessChart.data.datasets = [];
+    crewMembers.forEach((member, index) => {
+        const userData = wellnessData[member.name];
+        const chartData = userData?.current
+            ? [userData.current.stress, userData.current.mood, userData.current.energy, userData.current.focus, userData.current.health]
+            : [5, 7, 6, 8, 7]; // Default values if no check-in exists
+
+        wellnessChart.data.datasets.push({
+            label: member.name,
+            data: chartData,
+            borderColor: colors[index % colors.length],
+            backgroundColor: colors[index % colors.length].replace(')', ', 0.2)').replace('rgb', 'rgba').replace('#', 'rgba('),
+            borderWidth: 2
+        });
+    });
+    wellnessChart.update('active');
+}
+
+// Listen for wellness updates from check-in page (cross-tab updates)
+window.addEventListener('storage', (e) => {
+    if (e.key === 'wellnessUpdateTrigger') {
+        updateWellnessChart();
+    }
+});
+
+// Listen for wellness updates in the same page/tab
+window.addEventListener('wellnessUpdated', () => {
+    updateWellnessChart();
+});
 
 // Update alerts
 function updateAlerts(data) {
@@ -195,13 +311,38 @@ function updateAlerts(data) {
 
     const alerts = [];
 
-    if (data.oxygen < 19) alerts.push({ message: `Oxygen levels critical: ${data.oxygen.toFixed(1)}%`, type: 'critical' });
-    if (data.temperature > 25 || data.temperature < 0) alerts.push({ message: `Temperature out of range: ${data.temperature.toFixed(1)}°C`, type: 'critical' });
-    if (data.food < 20) alerts.push({ message: `Food inventory low: ${data.food.toFixed(1)}%`, type: 'warning' });
-    if (data.powerUsed > 90) alerts.push({ message: `Power usage high: ${data.powerUsed.toFixed(1)}%`, type: 'warning' });
-    if (data.sleep < 6) alerts.push({ message: `Sleep cycles insufficient: ${data.sleep.toFixed(1)}h`, type: 'warning' });
+    // Check overrides and add alerts
+    if (!alertOverrides.oxygen && data.oxygen < 19) {
+        const msg = `Oxygen levels critical: ${data.oxygen.toFixed(1)}%`;
+        alerts.push({ message: msg, type: 'critical', alertType: 'oxygen' });
+        logAlert('oxygen', msg, 'critical');
+    }
+    if (!alertOverrides.temperature && (data.temperature > 25 || data.temperature < 0)) {
+        const msg = `Temperature out of range: ${data.temperature.toFixed(1)}°C`;
+        alerts.push({ message: msg, type: 'critical', alertType: 'temperature' });
+        logAlert('temperature', msg, 'critical');
+    }
+    if (!alertOverrides.food && data.food < 20) {
+        const msg = `Food inventory low: ${data.food.toFixed(1)}%`;
+        alerts.push({ message: msg, type: 'warning', alertType: 'food' });
+        logAlert('food', msg, 'warning');
+    }
+    if (!alertOverrides.power && data.powerUsed > 90) {
+        const msg = `Power usage high: ${data.powerUsed.toFixed(1)}%`;
+        alerts.push({ message: msg, type: 'warning', alertType: 'power' });
+        logAlert('power', msg, 'warning');
+    }
+    if (!alertOverrides.sleep && data.sleep < 6) {
+        const msg = `Sleep cycles insufficient: ${data.sleep.toFixed(1)}h`;
+        alerts.push({ message: msg, type: 'warning', alertType: 'sleep' });
+        logAlert('sleep', msg, 'warning');
+    }
     const avgWellness = Object.values(data.wellness).reduce((a, b) => a + b) / 5;
-    if (avgWellness < 5) alerts.push({ message: `Crew wellness low: ${avgWellness.toFixed(1)}/10`, type: 'warning' });
+    if (!alertOverrides.wellness && avgWellness < 5) {
+        const msg = `Crew wellness low: ${avgWellness.toFixed(1)}/10`;
+        alerts.push({ message: msg, type: 'warning', alertType: 'wellness' });
+        logAlert('wellness', msg, 'warning');
+    }
 
     if (alerts.length === 0) {
         alerts.push({ message: 'All systems nominal', type: 'normal' });
@@ -211,6 +352,10 @@ function updateAlerts(data) {
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert ${alert.type === 'normal' ? 'normal' : ''}`;
         alertDiv.textContent = alert.message;
+        if (alert.alertType && alertOverrides[alert.alertType]) {
+            alertDiv.style.opacity = '0.5';
+            alertDiv.title = 'Alert overridden by admin';
+        }
         alertsContainer.appendChild(alertDiv);
     });
 }
@@ -266,6 +411,9 @@ function processCommand(command) {
                     loginTime = Date.now();
                     user.stats.loginCount++;
                     user.stats.lastLogin = Date.now();
+                    // Save current user to localStorage for admin page
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    localStorage.setItem('crewMembers', JSON.stringify(crewMembers));
                     response = `Logged in as ${user.name} (${user.role})`;
                 } else {
                     response = 'User not found';
@@ -291,10 +439,14 @@ function processCommand(command) {
             }
             break;
         case 'set':
-            if (parts[1] && parts[2] && currentUser && currentUser.privileges.includes('write')) {
+            if (parts[1] && parts[2] && currentUser && currentUser.privileges.includes('admin')) {
                 response = `Set ${parts[1]} to ${parts[2]} (simulated)`;
+            } else if (!currentUser) {
+                response = 'Access denied. Login required.';
+            } else if (!currentUser.privileges.includes('admin')) {
+                response = 'Access denied. Admin privilege required.';
             } else {
-                response = 'Access denied or invalid syntax. Usage: set [parameter] [value]';
+                response = 'Invalid syntax. Usage: set [parameter] [value]';
             }
             break;
         case 'analytics':
@@ -307,9 +459,12 @@ function processCommand(command) {
         case 'logout':
             if (currentUser && loginTime) {
                 currentUser.stats.totalLoginTime += Date.now() - loginTime;
+                localStorage.setItem('crewMembers', JSON.stringify(crewMembers));
             }
             currentUser = null;
             loginTime = null;
+            // Clear current user from localStorage
+            localStorage.removeItem('currentUser');
             response = 'Logged out';
             break;
         case 'alerts':
@@ -319,13 +474,55 @@ function processCommand(command) {
         case 'users':
             response = crewMembers.map(m => `${m.name} - ${m.role} (${m.privileges.join(', ')})`).join('\n');
             break;
+        case 'help':
+            response = `Available commands:
+login [username] - Logs in as a crew member
+whoami - Displays current logged-in user
+oxygen, temperature, food, power, sleep, wellness - Shows live metric data
+set [parameter] [value] - Adjusts simulated parameter (requires admin privilege)
+analytics - Displays simulated analytics summary (requires research privilege)
+logout - Logs out of current session
+alerts - Lists all current system alerts
+users - Lists crew roles and privileges
+help - Shows this help message`;
+            break;
         default:
             response = 'Unknown command. Type "help" for available commands.';
     }
 
     if (currentUser) currentUser.stats.commandsExecuted++;
-    output.innerHTML += `<div>&gt; ${command}</div><div>${response}</div>`;
+
+    // Log the command
+    logCommand(command, response, currentUser);
+
+    // Display command immediately
+    output.innerHTML += `<div>&gt; ${command}</div>`;
+
+    // Create response div and animate typing
+    const responseDiv = document.createElement('div');
+    output.appendChild(responseDiv);
     output.scrollTop = output.scrollHeight;
+
+    // Type out the response
+    typeText(responseDiv, response, 15);
+}
+
+// Typing animation function
+function typeText(element, text, speed = 20) {
+    let index = 0;
+    element.textContent = '';
+
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            const output = document.getElementById('terminal-output');
+            output.scrollTop = output.scrollHeight;
+            setTimeout(type, speed);
+        }
+    }
+
+    type();
 }
 
 // Crew chat
@@ -400,12 +597,41 @@ function initCrewRadar() {
     drawRadar();
 }
 
+// Logging and Admin State
+let alertOverrides = JSON.parse(localStorage.getItem('alertOverrides') || '{}');
+let alertLog = JSON.parse(localStorage.getItem('alertLog') || '[]');
+let commandLog = JSON.parse(localStorage.getItem('commandLog') || '[]');
+
+// Log an alert
+function logAlert(alertType, message, severity) {
+    const logEntry = {
+        timestamp: new Date().toISOString(),
+        type: alertType,
+        message: message,
+        severity: severity,
+        user: currentUser ? currentUser.name : 'System'
+    };
+    alertLog.push(logEntry);
+    localStorage.setItem('alertLog', JSON.stringify(alertLog));
+}
+
+// Log a command
+function logCommand(command, response, user) {
+    const logEntry = {
+        timestamp: new Date().toISOString(),
+        command: command,
+        response: response,
+        user: user ? user.name : 'Anonymous'
+    };
+    commandLog.push(logEntry);
+    localStorage.setItem('commandLog', JSON.stringify(commandLog));
+}
+
 // Main update loop
 function updateData() {
     const data = generateData();
     updateCharts(data);
     updateAlerts(data);
-    updateBayOccupancy();
 }
 
 // Initialize everything
@@ -414,6 +640,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCrew();
     initCrewChat();
     initCrewRadar();
+
+    // Load wellness data on initial page load
+    updateWellnessChart();
 
     // Terminal input
     const terminalInput = document.getElementById('terminal-input');
@@ -426,4 +655,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start simulation
     setInterval(updateData, 1000);
+    setInterval(updateBayOccupancy, 30000);
+    updateBayOccupancy(); // Initial call
 });

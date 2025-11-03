@@ -3,48 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Martian Habitat Dashboard</title>
+    <title>Daily Check-In - Martian Habitat</title>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>🪐 Martian Habitat Dashboard</h1>
+        <h1>Daily Wellness Check-In</h1>
         <nav>
             <a href="index.html">Dashboard</a>
             <a href="login.html">Login</a>
-            <a href="about.html">About</a>
+            <a href="about.html">Check-In</a>
+            <a href="admin.html">Admin</a>
+            <a href="research-log.html">Research Log</a>
         </nav>
     </header>
 
     <main>
-        <section>
-            <h2>About the Martian Habitat Dashboard</h2>
+        <div id="login-required" style="display: none;">
+            <section>
+                <h2>Login Required</h2>
+                <p>Please login from the <a href="index.html">Dashboard</a> to complete your daily check-in.</p>
+            </section>
+        </div>
 
-            <h3>🎨 Design Philosophy</h3>
-            <p>The Martian Habitat Dashboard embraces a <strong>glass-morphism aesthetic</strong> with translucent layers and soft glows to create an immersive, futuristic interface. The dark, OLED-optimized color scheme reduces eye strain during long missions while maintaining readability in low-light conditions.</p>
+        <div id="checkin-form" style="display: none;">
+            <section>
+                <h2>Daily Wellness Assessment</h2>
+                <p class="checkin-intro">Rate each aspect of your wellness today on a scale from 0 (worst) to 10 (best).</p>
 
-            <p>The typography choice of <strong>Atkinson Hyperlegible</strong> ensures maximum clarity and accessibility, critical for high-stakes environments where misreading data could have serious consequences.</p>
+                <div id="current-user-display" class="user-display"></div>
 
-            <h3>🌌 Project Vision</h3>
-            <p>This simulation reimagines how astronauts might monitor and manage environmental systems and crew health aboard a Martian or Lunar habitat. By generating all data locally through mathematical algorithms, the dashboard provides a self-contained training environment for mission planning and crew familiarization.</p>
+                <div class="wellness-questions">
+                    <div class="question-card">
+                        <label for="stress-slider">
+                            <h3>Stress Level</h3>
+                            <p class="question-hint">0 = Extremely stressed, 10 = Completely relaxed</p>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="stress-slider" min="0" max="10" value="5" step="1">
+                            <span class="slider-value" id="stress-value">5</span>
+                        </div>
+                    </div>
 
-            <p>The integration of Ship 67 Communications enables direct crew-to-crew messaging with the orbiting spacecraft, providing mission coordination, support, and information exchange in the isolating conditions of space exploration.</p>
+                    <div class="question-card">
+                        <label for="mood-slider">
+                            <h3>Mood</h3>
+                            <p class="question-hint">0 = Very negative, 10 = Extremely positive</p>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="mood-slider" min="0" max="10" value="5" step="1">
+                            <span class="slider-value" id="mood-value">5</span>
+                        </div>
+                    </div>
 
-            <h3>🧬 Technical Approach</h3>
-            <p>All environmental readings are created using sinusoidal patterns combined with Gaussian noise to simulate realistic fluctuations. This approach eliminates the need for external APIs while providing data that "feels alive" and responsive to crew actions.</p>
+                    <div class="question-card">
+                        <label for="energy-slider">
+                            <h3>Energy Level</h3>
+                            <p class="question-hint">0 = Completely exhausted, 10 = Fully energized</p>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="energy-slider" min="0" max="10" value="5" step="1">
+                            <span class="slider-value" id="energy-value">5</span>
+                        </div>
+                    </div>
 
-            <p>The command-line interface mimics real spacecraft control systems, encouraging precise, intentional interactions rather than point-and-click operations.</p>
+                    <div class="question-card">
+                        <label for="focus-slider">
+                            <h3>Focus & Concentration</h3>
+                            <p class="question-hint">0 = Cannot concentrate, 10 = Highly focused</p>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="focus-slider" min="0" max="10" value="5" step="1">
+                            <span class="slider-value" id="focus-value">5</span>
+                        </div>
+                    </div>
 
-            <h3>👥 Team</h3>
-            <ul>
-                <li><strong>Tarush V Kosgi</strong> – Frontend, Charts, Simulation Logic</li>
-                <li><strong>Abhinav Boora</strong> – AI Integration, Architecture, and Crew Systems</li>
-                <li><strong>Dheeraj Chennaboina, Lalith Dasa</strong> – UX, Testing, and Concept Development</li>
-            </ul>
+                    <div class="question-card">
+                        <label for="health-slider">
+                            <h3>Physical Health</h3>
+                            <p class="question-hint">0 = Very poor, 10 = Excellent</p>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="health-slider" min="0" max="10" value="5" step="1">
+                            <span class="slider-value" id="health-value">5</span>
+                        </div>
+                    </div>
+                </div>
 
-            <p><em>Version 1.0 – November 2025<br>Status: Functional Simulation Prototype (No API Dependencies)</em></p>
-        </section>
+                <div class="checkin-actions">
+                    <button id="submit-checkin" class="admin-btn">Submit Check-In</button>
+                </div>
+
+                <div id="last-checkin-info" class="last-checkin"></div>
+            </section>
+
+            <section id="checkin-history">
+                <h2>Your Check-In History</h2>
+                <div id="history-container"></div>
+            </section>
+        </div>
     </main>
+
+    <script src="checkin.js"></script>
 </body>
 </html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Panel - Martian Habitat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Control Panel</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="login.html">Login</a>
+            <a href="about.html">Check-In</a>
+            <a href="admin.html">Admin</a>
+            <a href="research-log.html">Research Log</a>
+        </nav>
+    </header>
+
+    <main>
+        <div id="access-denied" style="display: none;">
+            <section>
+                <h2>Access Denied</h2>
+                <p>You must be logged in as an administrator to access this page.</p>
+                <p>Please return to the <a href="index.html">Dashboard</a> and login with admin credentials.</p>
+            </section>
+        </div>
+
+        <div id="admin-content" style="display: none;">
+            <section id="user-management-section">
+                <h2>User Management</h2>
+                <div class="admin-subsection">
+                    <div id="user-list"></div>
+                    <button id="add-user-btn" class="admin-btn">Add New User</button>
+                </div>
+            </section>
+
+            <section id="alert-override-section">
+                <h2>Alert Override</h2>
+                <div class="admin-subsection">
+                    <div id="alert-override">
+                        <label>
+                            <input type="checkbox" id="override-oxygen"> Override Oxygen Alerts
+                        </label>
+                        <label>
+                            <input type="checkbox" id="override-temperature"> Override Temperature Alerts
+                        </label>
+                        <label>
+                            <input type="checkbox" id="override-food"> Override Food Alerts
+                        </label>
+                        <label>
+                            <input type="checkbox" id="override-power"> Override Power Alerts
+                        </label>
+                        <label>
+                            <input type="checkbox" id="override-sleep"> Override Sleep Alerts
+                        </label>
+                        <label>
+                            <input type="checkbox" id="override-wellness"> Override Wellness Alerts
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section id="logging-section">
+                <h2>System Logs</h2>
+                <div class="admin-subsection">
+                    <div class="log-section">
+                        <h3>Alert Logs</h3>
+                        <div id="alert-log-preview" class="log-preview"></div>
+                        <button id="download-alert-log" class="admin-btn">Download Alert Log</button>
+                    </div>
+                    <div class="log-section">
+                        <h3>Command Logs</h3>
+                        <div id="command-log-preview" class="log-preview"></div>
+                        <button id="download-command-log" class="admin-btn">Download Command Log</button>
+                    </div>
+                    <button id="clear-logs-btn" class="admin-btn admin-btn-danger">Clear All Logs</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- User Edit Modal -->
+        <div id="user-edit-modal" class="modal">
+            <div class="modal-content">
+                <h2 id="user-modal-title">Edit User</h2>
+                <input type="text" id="user-name-input" placeholder="Name">
+                <input type="text" id="user-role-input" placeholder="Role">
+                <div class="privilege-checkboxes">
+                    <h4>Privileges:</h4>
+                    <label><input type="checkbox" class="privilege-check" value="read"> Read</label>
+                    <label><input type="checkbox" class="privilege-check" value="write"> Write</label>
+                    <label><input type="checkbox" class="privilege-check" value="admin"> Admin</label>
+                    <label><input type="checkbox" class="privilege-check" value="research"> Research</label>
+                    <label><input type="checkbox" class="privilege-check" value="medical"> Medical</label>
+                </div>
+                <textarea id="user-alerts-input" placeholder="Alerts (one per line)"></textarea>
+                <div class="modal-buttons">
+                    <button id="save-user-btn" class="admin-btn">Save</button>
+                    <button id="cancel-user-btn" class="admin-btn">Cancel</button>
+                    <button id="delete-user-btn" class="admin-btn admin-btn-danger">Delete User</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+</html>
