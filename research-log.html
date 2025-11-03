@@ -64,6 +64,15 @@
             <div id="todo-list"></div>
         </section>
 
+        <section id="astronaut-assistant-section">
+            <h2>Astronaut Research Assistant</h2>
+            <div id="astronaut-chat" class="chat-container"></div>
+            <div class="chat-input-area">
+                <input type="text" id="astronaut-input" placeholder="Ask your research assistant...">
+                <button id="astronaut-send" class="log-btn">Send</button>
+            </div>
+        </section>
+
         <!-- Video Detail Modal -->
         <div id="video-modal" class="modal">
             <div class="modal-content video-modal-content">
@@ -81,8 +90,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- Astronaut Assistant API Key Modal -->
+        <div id="astronaut-modal" class="modal">
+            <div class="modal-content">
+                <h3>Configure Astronaut Assistant API Key</h3>
+                <p>Enter your Gemini API key to enable the Astronaut Research Assistant:</p>
+                <input type="password" id="astronaut-api-key-input" placeholder="Enter Gemini API key">
+                <div class="modal-buttons">
+                    <button id="save-astronaut-api-key" class="log-btn">Save</button>
+                    <button id="cancel-astronaut-api-key" class="log-btn log-btn-danger">Cancel</button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script src="research-log.js"></script>
+    <script src="astronaut.js"></script>
 </body>
 </html>
