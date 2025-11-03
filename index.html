@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martian Habitat Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>🪐 Martian Habitat Dashboard</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="login.html">Login</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="life-support">
+            <h2>Life Support Systems</h2>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>Oxygen Levels</h3>
+                    <canvas id="oxygenChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Temperature</h3>
+                    <canvas id="temperatureChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Food Inventory</h3>
+                    <canvas id="foodChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Power Usage</h3>
+                    <canvas id="powerChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Sleep Cycles</h3>
+                    <canvas id="sleepChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Wellness</h3>
+                    <canvas id="wellnessChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="alerts">
+            <h2>Active Alerts</h2>
+            <div id="alerts-container"></div>
+        </section>
+
+        <section id="bay-occupancy">
+            <h2>Bay Occupancy</h2>
+            <div class="bay-grid">
+                <div class="bay" data-bay="1">Bay 1</div>
+                <div class="bay" data-bay="2">Bay 2</div>
+                <div class="bay" data-bay="3">Bay 3</div>
+                <div class="bay" data-bay="4">Bay 4</div>
+                <div class="bay" data-bay="5">Bay 5</div>
+                <div class="bay" data-bay="6">Bay 6</div>
+            </div>
+        </section>
+
+        <section id="crew">
+            <h2>Crew Profiles</h2>
+            <div id="crew-container"></div>
+        </section>
+
+        <section id="terminal">
+            <h2>Command Terminal</h2>
+            <div id="terminal-output"></div>
+            <input type="text" id="terminal-input" placeholder="Enter command...">
+        </section>
+
+        <section id="ship67-comms">
+            <h2>Ship 67 Communications</h2>
+            <div id="ship67-chat"></div>
+            <input type="text" id="ship67-input" placeholder="Communicate with Ship 67...">
+            <button id="ship67-send">Send</button>
+        </section>
+
+        <!-- Ship 67 API Key Modal -->
+        <div id="ship67-modal" class="modal">
+            <div class="modal-content">
+                <h2>Ship 67 Communication Setup</h2>
+                <p>Enter your Gemini API key to establish communication with Ship 67:</p>
+                <input type="password" id="api-key-input" placeholder="Enter Gemini API Key...">
+                <div class="modal-buttons">
+                    <button id="save-api-key">Connect</button>
+                    <button id="cancel-api-key">Cancel</button>
+                </div>
+                <p class="modal-hint">Get your API key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+            </div>
+        </div>
+
+        <section id="crew-chat">
+            <h2>Crew Chat</h2>
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Type message...">
+            <button id="chat-send">Send</button>
+        </section>
+
+        <section id="crew-radar">
+            <h2>Crew Radar</h2>
+            <canvas id="radarCanvas" width="400" height="400"></canvas>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="ship67-comms.js"></script>
+</body>
+</html>

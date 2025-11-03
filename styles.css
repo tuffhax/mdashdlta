@@ -1,0 +1,432 @@
+/* Martian Habitat Dashboard Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    color: #00d4ff;
+    font-size: 1.8rem;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background: rgba(0, 212, 255, 0.2);
+}
+
+main {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+section {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+section h2 {
+    color: #00d4ff;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.chart-container {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 180px;
+}
+
+.chart-container h3 {
+    color: #4ecdc4;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+#alerts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.alert {
+    background: rgba(255, 107, 107, 0.2);
+    border: 1px solid #ff6b6b;
+    border-radius: 5px;
+    padding: 0.75rem;
+    animation: pulse 2s infinite;
+}
+
+.alert.normal {
+    background: rgba(78, 205, 196, 0.2);
+    border-color: #4ecdc4;
+    animation: none;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+}
+
+.bay-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.bay {
+    background: rgba(255, 107, 107, 0.3);
+    border: 2px solid #ff6b6b;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.bay.occupied {
+    background: rgba(78, 205, 196, 0.3);
+    border-color: #4ecdc4;
+}
+
+#crew-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.crew-member {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.crew-member h3 {
+    color: #00d4ff;
+    margin-bottom: 0.5rem;
+}
+
+#terminal-output {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    padding: 1rem;
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    font-family: 'Courier New', monospace;
+}
+
+#terminal-input {
+    width: 100%;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    color: #e0e0e0;
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+}
+
+#aria-chat {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    padding: 1rem;
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+}
+
+#aria-input {
+    width: calc(100% - 60px);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    color: #e0e0e0;
+    margin-right: 0.5rem;
+}
+
+#aria-send {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 212, 255, 0.2);
+    border: 1px solid #00d4ff;
+    border-radius: 5px;
+    color: #00d4ff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#aria-send:hover {
+    background: rgba(0, 212, 255, 0.4);
+}
+
+#ship67-chat {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    padding: 1rem;
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    font-family: 'Courier New', monospace;
+}
+
+#ship67-input {
+    width: calc(100% - 60px);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    margin-right: 0.5rem;
+}
+
+#ship67-send {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 212, 255, 0.2);
+    border: 1px solid #00d4ff;
+    border-radius: 5px;
+    color: #00d4ff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#ship67-send:hover {
+    background: rgba(0, 212, 255, 0.4);
+}
+
+#chat-messages {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    padding: 1rem;
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+}
+
+#chat-input {
+    width: calc(100% - 60px);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    color: #e0e0e0;
+    margin-right: 0.5rem;
+}
+
+#chat-send {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 212, 255, 0.2);
+    border: 1px solid #00d4ff;
+    border-radius: 5px;
+    color: #00d4ff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#chat-send:hover {
+    background: rgba(0, 212, 255, 0.4);
+}
+
+#radarCanvas {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    border: 2px solid rgba(0, 212, 255, 0.5);
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-content h2 {
+    color: #00d4ff;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.modal-content p {
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+}
+
+.modal-hint {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 1rem;
+}
+
+.modal-hint a {
+    color: #00d4ff;
+    text-decoration: none;
+}
+
+.modal-hint a:hover {
+    text-decoration: underline;
+}
+
+#api-key-input {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 5px;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+#api-key-input:focus {
+    outline: none;
+    border-color: #00d4ff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+#save-api-key {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+    color: #00d4ff;
+}
+
+#save-api-key:hover {
+    background: rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+#cancel-api-key {
+    background: rgba(255, 107, 107, 0.2);
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+#cancel-api-key:hover {
+    background: rgba(255, 107, 107, 0.4);
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bay-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #crew-container {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+}

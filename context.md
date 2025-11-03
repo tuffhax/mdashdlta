@@ -1,4 +1,4 @@
-# mdashdlta
+# Context
 # 🪐 Martian Habitat Dashboard – Project Context (Current Implementation)
 
 ## 🚀 Overview
@@ -167,10 +167,37 @@ A self-contained simulation that reimagines how astronauts could manage environm
 
 ---
 
-## 🧑‍🚀 Authors
+
 * Tarush V Kosgi – Frontend, Charts, Simulation Logic
 * Abhinav Boora – AI Integration, Architecture, and Crew Systems
 * Dheeraj Chennaboina, Lalith Dasa, and Team – UX, Testing, and Concept Development
 
 **Version 1.0 – November 2025**
 **Status:** Functional Simulation Prototype (No API Dependencies)
+## Features
+
+### Login Page
+- Provides access to the system
+- Allows overriding alerts when necessary
+
+### Personal Login Section
+- Dedicated area for individual users to log in
+- Displays personal statistics for each user
+
+### Crew Chat
+- Real-time chat functionality between the 4 crewmates:
+  - Abhinav
+  - Dheeraj
+  - Lalith
+  - Tarushv
+- Chat history stored locally on the device
+
+### Crew Radar
+- Visual radar display showing the positions of crewmates within the habitat
+- Indicates distance between crewmates in real-time
+
+### Logging system
+- a easy to read downloadable files will be made logging the following:
+  - One for all alerts that popped up and the time at which they popped up along with for who. 
+  - One for all commands that were sent through the terminal. This should be logged and turned into a docs weekly.
+  - Make it simple and easy to read.

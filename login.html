@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Martian Habitat Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>🪐 Martian Habitat Dashboard</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="login.html">Login</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="login-section">
+            <h2>System Access</h2>
+            <div class="login-form">
+                <input type="text" id="login-username" placeholder="Enter username...">
+                <button id="login-button">Login</button>
+                <div id="login-status"></div>
+            </div>
+        </section>
+
+        <section id="personal-section">
+            <h2>Personal Dashboard</h2>
+            <div id="personal-content">
+                <p>Please login to view your personal statistics and alerts.</p>
+            </div>
+        </section>
+
+        <section id="alert-override">
+            <h2>Alert Management</h2>
+            <div id="override-content">
+                <p>Admin privileges required to override alerts.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Simple login system (in a real app, this would be server-side)
+        const crewMembers = [
+            { name: "Dheeraj Chennaboina", role: "Commander", privileges: ["read", "write", "admin"] },
+            { name: "Tarushv Kosgi", role: "Engineer", privileges: ["read", "write", "research"] },
+            { name: "Abhinav Boora", role: "Scientist", privileges: ["read", "research", "medical"] },
+            { name: "Lalith Dasa", role: "Medic", privileges: ["read", "medical", "admin"] },
+            { name: "Crew Member 5", role: "Technician", privileges: ["read", "write"] },
+            { name: "Crew Member 6", role: "Pilot", privileges: ["read", "write"] }
+        ];
+
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+        function updateLoginStatus() {
+            const statusDiv = document.getElementById('login-status');
+            const personalDiv = document.getElementById('personal-content');
+            const overrideDiv = document.getElementById('override-content');
+
+            if (currentUser) {
+                statusDiv.innerHTML = `<p>Logged in as: <strong>${currentUser.name}</strong> (${currentUser.role})</p>`;
+
+                personalDiv.innerHTML = `
+                    <h3>Welcome, ${currentUser.name.split(' ')[0]}</h3>
+                    <p><strong>Role:</strong> ${currentUser.role}</p>
+                    <p><strong>Privileges:</strong> ${currentUser.privileges.join(', ')}</p>
+                    <h4>Personal Statistics</h4>
+                    <ul>
+                        <li>Sleep Hours: 7.5h (last 24h)</li>
+                        <li>Wellness Score: 8.2/10</li>
+                        <li>Tasks Completed: 12</li>
+                        <li>Active Alerts: 2</li>
+                    </ul>
+                    <button id="logout-button">Logout</button>
+                `;
+
+                if (currentUser.privileges.includes('admin')) {
+                    overrideDiv.innerHTML = `
+                        <h3>Alert Override (Admin Only)</h3>
+                        <p>Current active alerts can be acknowledged or overridden.</p>
+                        <button id="acknowledge-alerts">Acknowledge All Alerts</button>
+                        <button id="override-alerts">Override Critical Alerts</button>
+                    `;
+                } else {
+                    overrideDiv.innerHTML = '<p>Admin privileges required to override alerts.</p>';
+                }
+
+                document.getElementById('logout-button').addEventListener('click', () => {
+                    currentUser = null;
+                    localStorage.removeItem('currentUser');
+                    location.reload();
+                });
+
+                if (currentUser.privileges.includes('admin')) {
+                    document.getElementById('acknowledge-alerts').addEventListener('click', () => {
+                        alert('All alerts acknowledged (simulated)');
+                    });
+                    document.getElementById('override-alerts').addEventListener('click', () => {
+                        alert('Critical alerts overridden (simulated)');
+                    });
+                }
+            } else {
+                statusDiv.innerHTML = '<p>Not logged in</p>';
+                personalDiv.innerHTML = '<p>Please login to view your personal statistics and alerts.</p>';
+                overrideDiv.innerHTML = '<p>Admin privileges required to override alerts.</p>';
+            }
+        }
+
+        document.getElementById('login-button').addEventListener('click', () => {
+            const username = document.getElementById('login-username').value.trim();
+            if (username) {
+                const user = crewMembers.find(m => m.name.toLowerCase().includes(username.toLowerCase()));
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    updateLoginStatus();
+                    document.getElementById('login-username').value = '';
+                } else {
+                    alert('User not found');
+                }
+            }
+        });
+
+        document.getElementById('login-username').addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                document.getElementById('login-button').click();
+            }
+        });
+
+        // Initialize
+        updateLoginStatus();
+    </script>
+</body>
+</html>
